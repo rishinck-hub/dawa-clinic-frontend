@@ -104,7 +104,10 @@ export default function Login() {
             <button type="submit" disabled={loading} className="login-button">
               {loading ? "🔄 Signing in..." : "✨ Sign In"}
             </button>
-          </form>          <p
+          </form>
+        </div>
+
+        <p
           style={{
             textAlign: "center",
             color: "rgba(107, 167, 255, 0.7)",
@@ -113,7 +116,7 @@ export default function Login() {
             fontWeight: "500",
           }}
         >
-          🚀 Modern Healthcare Management Platform
+         Dawa Homeo Clinic Karappuram
         </p>
       </div>
     </div>
