@@ -15,8 +15,8 @@ export default function APITest() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          username: "admin",
-          password: "admin123",
+          username: "",
+          password: "",
         }),
       });
       const data = await response.json();

@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import api from "../services/api";
 import { useNavigate } from "react-router-dom";
 import DAWALogo from "../components/DAWALogo";
@@ -104,26 +104,7 @@ export default function Login() {
             <button type="submit" disabled={loading} className="login-button">
               {loading ? "🔄 Signing in..." : "✨ Sign In"}
             </button>
-          </form>
-
-          <div className="demo-credentials">
-            <div className="demo-title">Demo Credentials</div>
-            <div className="credentials-grid">
-              <div className="credential-badge badge-admin">
-                <div className="badge-label">👨‍💼 Admin</div>
-                <div className="badge-value">admin</div>
-                <div className="badge-value">admin123</div>
-              </div>
-              <div className="credential-badge badge-doctor">
-                <div className="badge-label">🩺 Doctor</div>
-                <div className="badge-value">doctor</div>
-                <div className="badge-value">doctor123</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <p
+          </form>          <p
           style={{
             textAlign: "center",
             color: "rgba(107, 167, 255, 0.7)",
@@ -138,3 +119,4 @@ export default function Login() {
     </div>
   );
 }
+
