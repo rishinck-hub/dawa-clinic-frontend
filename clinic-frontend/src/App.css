@@ -1,0 +1,15 @@
+/* App-wide custom styles */
+body {
+  background-color: var(--bg);
+}
+
+.card {
+  box-shadow: 0 2px 8px rgba(60, 80, 120, 0.08);
+}
+
+.navbar-brand {
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+/* Add more custom rules as needed */
