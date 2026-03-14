@@ -7,6 +7,8 @@ import React from "react";
 export default function DAWALogo({
   size = "medium",
   showName = true,
+  logoSrc = "/dawa-logo.png",
+  logoAlt = "DAWA Homeo Clinic logo",
   className = "",
 }) {
   const sizes = {
@@ -27,13 +29,12 @@ export default function DAWALogo({
         style={{
           width: currentSize.width,
           height: currentSize.height,
-          background:
-            "linear-gradient(135deg, #003da5 0%, #0a3b7d 50%, #b8d700 100%)",
-          borderRadius: currentSize.width / 8,
+          background: "transparent",
+          borderRadius: currentSize.width / 10,
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          boxShadow: "0 10px 15px -3px rgba(0, 61, 165, 0.3)",
+          boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.25)",
           transition: "transform 0.3s ease",
           fontSize: currentSize.fontSize,
         }}
@@ -44,7 +45,16 @@ export default function DAWALogo({
           e.currentTarget.style.transform = "scale(1)";
         }}
       >
-        🩺
+        <img
+          src={logoSrc}
+          alt={logoAlt}
+          style={{
+            width: "100%",
+            height: "100%",
+            objectFit: "contain",
+            borderRadius: currentSize.width / 10,
+          }}
+        />
       </div>
 
       {/* Clinic Name & Tagline */}
@@ -56,10 +66,7 @@ export default function DAWALogo({
             style={{
               fontSize: currentSize.width > 50 ? "1.125rem" : "0.875rem",
               fontWeight: 900,
-              background: "linear-gradient(90deg, #003da5 0%, #b8d700 100%)",
-              backgroundClip: "text",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
+              color: "#ffffff",
             }}
           >
             DAWA
@@ -67,7 +74,7 @@ export default function DAWALogo({
           <div
             style={{
               fontSize: currentSize.width > 50 ? "0.75rem" : "0.625rem",
-              color: "#b8d700",
+              color: "#ffffff",
               fontWeight: 600,
               letterSpacing: "0.05em",
               textTransform: "uppercase",

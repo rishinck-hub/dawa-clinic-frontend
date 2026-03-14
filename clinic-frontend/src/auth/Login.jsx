@@ -110,7 +110,7 @@ export default function Login() {
         <p
           style={{
             textAlign: "center",
-            color: "rgba(107, 167, 255, 0.7)",
+            color: "#ffffff",
             fontSize: "0.875rem",
             marginTop: "2rem",
             fontWeight: "500",
