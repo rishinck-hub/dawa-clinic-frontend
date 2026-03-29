@@ -281,7 +281,10 @@ export default function ConsultationHistory() {
                       margin: "0",
                     }}
                   >
-                    👤 {consultation.patient_name}
+                    👤 {consultation.patient_name}{" "}
+                    {consultation.patient_code
+                      ? `(${consultation.patient_code})`
+                      : ""}
                   </h3>
                   <p
                     style={{

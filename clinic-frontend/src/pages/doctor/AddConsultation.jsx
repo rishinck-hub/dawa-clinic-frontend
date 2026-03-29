@@ -165,7 +165,7 @@ export default function AddConsultation() {
               <div style={{ position: "relative" }}>
                 <input
                   type="text"
-                  placeholder="🔍 Search patient by name or phone..."
+                  placeholder="🔍 Search patient by name, phone, or PL00 code..."
                   value={patientSearch}
                   onChange={(e) => {
                     setPatientSearch(e.target.value);
@@ -217,7 +217,10 @@ export default function AddConsultation() {
                               fontSize: "1rem",
                             }}
                           >
-                            👤 {patient.name}
+                            👤 {patient.name}{" "}
+                            {patient.patient_code
+                              ? `(${patient.patient_code})`
+                              : ""}
                           </div>
                           <div
                             style={{

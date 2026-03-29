@@ -38,7 +38,7 @@ export default function QuickPatientSearch() {
     setLoadingHistory(true);
     try {
       const res = await api.get(
-        `doctor/consultations/history/?search=${patient.name}`,
+        `doctor/patients/${patient.id}/consultations/`,
       );
       setPatientHistory(res.data || []);
     } catch (err) {
@@ -79,7 +79,7 @@ export default function QuickPatientSearch() {
       <div style={{ position: "relative", marginBottom: "1.5rem" }}>
         <input
           type="text"
-          placeholder="Search patient by name or phone..."
+          placeholder="Search patient by name, phone, or PL00 code..."
           value={search}
           onChange={handleSearch}
           className="form-input"
@@ -142,7 +142,8 @@ export default function QuickPatientSearch() {
                     fontSize: "1rem",
                   }}
                 >
-                  👤 {patient.name}
+                  👤 {patient.name}{" "}
+                  {patient.patient_code ? `(${patient.patient_code})` : ""}
                 </div>
                 <div
                   style={{

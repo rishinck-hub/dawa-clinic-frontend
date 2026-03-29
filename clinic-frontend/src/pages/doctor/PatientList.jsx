@@ -9,6 +9,10 @@ export default function PatientList() {
   const [editForm, setEditForm] = useState({});
   const [deleteId, setDeleteId] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [historyPatient, setHistoryPatient] = useState(null);
+  const [historyConsultations, setHistoryConsultations] = useState([]);
+  const [historyLoading, setHistoryLoading] = useState(false);
+  const [historyError, setHistoryError] = useState("");
 
   const fetchPatients = async (query = "") => {
     try {
@@ -64,6 +68,23 @@ export default function PatientList() {
     }
   };
 
+  const openHistory = async (patient) => {
+    setHistoryPatient(patient);
+    setHistoryLoading(true);
+    setHistoryError("");
+    try {
+      const res = await api.get(
+        `doctor/patients/${patient.id}/consultations/`
+      );
+      setHistoryConsultations(res.data || []);
+    } catch (err) {
+      setHistoryConsultations([]);
+      setHistoryError("Failed to load consultation history.");
+    } finally {
+      setHistoryLoading(false);
+    }
+  };
+
   return (
     <div className="dashboard-container">
       <div className="dashboard-background">
@@ -107,7 +128,7 @@ export default function PatientList() {
           <div style={{ display: "flex", gap: "1rem", marginBottom: "1rem" }}>
             <input
               type="text"
-              placeholder="🔍 Search by name, phone, or ID..."
+              placeholder="🔍 Search by name, phone, ID, or PL00 code..."
               value={searchQuery}
               onChange={handleSearch}
               style={{
@@ -216,6 +237,17 @@ export default function PatientList() {
                       ✏️ Edit
                     </button>
                     <button
+                      onClick={() => openHistory(patient)}
+                      className="btn btn-primary"
+                      style={{
+                        padding: "0.5rem 1rem",
+                        fontSize: "0.875rem",
+                        background: "rgba(59, 130, 246, 0.8)",
+                      }}
+                    >
+                      📜 History
+                    </button>
+                    <button
                       onClick={() => setDeleteId(patient.id)}
                       className="btn btn-primary"
                       style={{
@@ -238,6 +270,25 @@ export default function PatientList() {
                 >
                   {patient.name}
                 </h3>
+                {patient.patient_code && (
+                  <div
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: "0.5rem",
+                      padding: "0.25rem 0.6rem",
+                      borderRadius: "999px",
+                      background: "rgba(59, 130, 246, 0.15)",
+                      color: "#93c5fd",
+                      fontSize: "0.75rem",
+                      fontWeight: 700,
+                      letterSpacing: "0.02em",
+                      marginBottom: "0.75rem",
+                    }}
+                  >
+                    ID: {patient.patient_code}
+                  </div>
+                )}
 
                 <div
                   style={{
@@ -537,6 +588,135 @@ export default function PatientList() {
                 ✕ Cancel
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* History Modal */}
+      {historyPatient && (
+        <div
+          style={{
+            position: "fixed",
+            inset: 0,
+            background: "rgba(0,0,0,0.5)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 50,
+          }}
+        >
+          <div
+            style={{
+              background: "#0f172a",
+              borderRadius: "1rem",
+              padding: "2rem",
+              maxWidth: "700px",
+              width: "92%",
+              maxHeight: "80vh",
+              overflowY: "auto",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                marginBottom: "1rem",
+              }}
+            >
+              <div>
+                <h2
+                  style={{
+                    color: "var(--text)",
+                    fontSize: "1.5rem",
+                    fontWeight: 700,
+                    marginBottom: "0.25rem",
+                  }}
+                >
+                  Consultation History
+                </h2>
+                <p style={{ color: "rgba(255,255,255,0.7)" }}>
+                  {historyPatient.name}{" "}
+                  {historyPatient.patient_code
+                    ? `(${historyPatient.patient_code})`
+                    : ""}
+                </p>
+              </div>
+              <button
+                onClick={() => setHistoryPatient(null)}
+                className="btn btn-secondary"
+              >
+                ✕ Close
+              </button>
+            </div>
+
+            {historyLoading ? (
+              <p style={{ color: "#93c5fd", fontWeight: 600 }}>
+                Loading consultations...
+              </p>
+            ) : historyError ? (
+              <p style={{ color: "#fca5a5", fontWeight: 600 }}>
+                {historyError}
+              </p>
+            ) : historyConsultations.length === 0 ? (
+              <p style={{ color: "#93c5fd", fontWeight: 600 }}>
+                No past consultations found.
+              </p>
+            ) : (
+              <div style={{ display: "grid", gap: "1rem" }}>
+                {historyConsultations.map((c) => (
+                  <div
+                    key={c.id}
+                    style={{
+                      padding: "1rem",
+                      borderRadius: "0.75rem",
+                      background: "rgba(15, 23, 42, 0.6)",
+                      border: "1px solid rgba(148, 163, 184, 0.2)",
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        marginBottom: "0.5rem",
+                      }}
+                    >
+                      <strong style={{ color: "var(--text)" }}>
+                        📅{" "}
+                        {new Date(c.date).toLocaleDateString("en-US", {
+                          year: "numeric",
+                          month: "short",
+                          day: "numeric",
+                        })}{" "}
+                        {new Date(c.date).toLocaleTimeString([], {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}
+                      </strong>
+                      <span style={{ color: "#93c5fd", fontSize: "0.8rem" }}>
+                        #{c.id}
+                      </span>
+                    </div>
+                    <div style={{ color: "rgba(255,255,255,0.8)" }}>
+                      {c.notes || "No notes provided"}
+                    </div>
+                    {c.medicines && c.medicines.length > 0 && (
+                      <div
+                        style={{
+                          marginTop: "0.75rem",
+                          color: "rgba(255,255,255,0.7)",
+                          fontSize: "0.85rem",
+                        }}
+                      >
+                        💊 {c.medicines.length} medicine
+                        {c.medicines.length !== 1 ? "s" : ""}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       )}
